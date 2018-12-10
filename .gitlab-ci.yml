@@ -13,8 +13,9 @@ Deploy Infra:
   stage: infra
   script:
     - echo "Start infrustructure deployment"
-    - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-    - source "/root/.bashrc"
+    - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh
+    - chmod +x install.sh
+    - ./install.sh -a
     - yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID}
     - yc config list
 
