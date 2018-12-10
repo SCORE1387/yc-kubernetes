@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # master01
-yc compute instance create \
+~/yandex-cloud/bin/yc compute instance create \
     --name master01 \
 	--hostname master01 \
     --zone ru-central1-a \
@@ -12,7 +12,7 @@ yc compute instance create \
     --ssh-key ./ci/id_rsa.pub
 	
 # master02
-yc compute instance create \
+~/yandex-cloud/bin/yc compute instance create \
     --name master01 \
 	--hostname master02 \
     --zone ru-central1-b \
@@ -23,7 +23,7 @@ yc compute instance create \
     --ssh-key ./ci/id_rsa.pub
 
 # master03	
-yc compute instance create \
+~/yandex-cloud/bin/yc compute instance create \
     --name master03 \
 	--hostname master01 \
     --zone ru-central1-c \
