@@ -4,6 +4,10 @@ stages:
   - infra
   - kube
   - destroy
+  
+before_script:
+  - apt-get update
+  - apt-get install curl
 
 Deploy Infra:
   stage: infra
