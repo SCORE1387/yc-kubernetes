@@ -10,6 +10,7 @@ function deploy_access_vm {
     local subnet=$3
     local ip=$4
     
+echo "Start Access VM deployment."
 ~/yandex-cloud/bin/yc compute instance create \
     --name ${name} \
     --hostname ${name} \
@@ -32,6 +33,7 @@ function deploy_master {
     local subnet=$3
     local ip=$4
     
+echo "Start Master ${name} VM deployment."
 ~/yandex-cloud/bin/yc compute instance create \
     --name ${name} \
     --hostname ${name} \
@@ -53,6 +55,7 @@ function deploy_node {
     local subnet=$3
     local ip=$4
     
+echo "Start Node ${name} VM deployment."
 ~/yandex-cloud/bin/yc compute instance create \
     --name ${name} \
     --hostname ${name} \
