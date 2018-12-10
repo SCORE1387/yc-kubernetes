@@ -14,7 +14,7 @@ Deploy Infra:
   stage: infra
   script:
     - echo "Start infrustructure deployment"
-    - ~/yandex-cloud/bin/yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID}
+    - ~/yandex-cloud/bin/yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID} --no-user-output
     - ~/yandex-cloud/bin/yc config list
 
 Deploy Kubernetes:
