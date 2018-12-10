@@ -9,13 +9,15 @@ before_script:
   - apt-get update
   - apt-get install -y -qq curl
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+  - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
+  - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
+  - ~/yandex-cloud/bin/yc config set folder-id ${YC_FOLDER_ID}
+  - ~/yandex-cloud/bin/yc config list
 
 Deploy Infra:
   stage: infra
   script:
     - echo "Start infrustructure deployment"
-    - ~/yandex-cloud/bin/yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID} --no-user-output
-    - ~/yandex-cloud/bin/yc config list
 
 Deploy Kubernetes:
   stage: kube
