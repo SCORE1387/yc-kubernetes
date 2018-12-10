@@ -28,5 +28,6 @@ Deploy Kubernetes:
 Destroy:
   stage: destroy
   script:
-    - echo "Do your deploy here"
+    - echo "Destroy infra"
+    - ./ci/destroy.sh
   when: manual
