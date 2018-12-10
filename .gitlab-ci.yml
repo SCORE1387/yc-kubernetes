@@ -1,0 +1,14 @@
+image: busybox:latest
+
+stages:
+  - deploy
+
+deploy infrastructure:
+  stage: deploy
+  script:
+    - echo "Do your deploy here"
+
+deploy kubernetes:
+  stage: deploy
+  script:
+    - echo "Do your deploy here"
