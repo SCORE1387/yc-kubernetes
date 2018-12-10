@@ -16,3 +16,13 @@ echo "Destroy Master (master03) VM."
 
 echo "Destroy Access VM."
 ~/yandex-cloud/bin/yc compute instance delete access
+
+echo "Destroy subnet kube-subnet-a."
+~/yandex-cloud/bin/yc vpc delete subnet kube-subnet-a
+echo "Destroy subnet kube-subnet-a."
+~/yandex-cloud/bin/yc vpc delete subnet kube-subnet-b
+echo "Destroy subnet kube-subnet-a."
+~/yandex-cloud/bin/yc vpc delete subnet kube-subnet-c
+
+echo "Destroy network kube-net."
+~/yandex-cloud/bin/yc vpc delete network kube-net
