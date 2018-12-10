@@ -18,7 +18,7 @@ echo "Start Access VM deployment."
     --memory 1 \
     --cores 1 \
     --core-fraction 5 \
-    --network-interface subnet-name=${subnet},address=${ip} \
+    --network-interface subnet-name=${subnet},address=${ip},nat-ip-version=ipv4  \
     --create-boot-disk image-folder-id=standard-images,image-name=ubuntu-1604-lts-1539450374,size=20 \
     --ssh-key ./ci/id_rsa.pub
 }
