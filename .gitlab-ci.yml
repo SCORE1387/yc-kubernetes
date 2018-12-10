@@ -8,7 +8,10 @@ stages:
 Deploy Infra:
   stage: infra
   script:
-    - echo "Do your deploy here"
+    - echo "Start infrustructure deployment"
+    - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+    - yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID}
+    - yc config list
 
 Deploy Kubernetes:
   stage: kube
