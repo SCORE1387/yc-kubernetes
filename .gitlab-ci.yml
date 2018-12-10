@@ -1,14 +1,22 @@
 image: busybox:latest
 
 stages:
-  - deploy
+  - infra
+  - kube
+  - destroy
 
-deploy infrastructure:
-  stage: deploy
+Deploy Infra:
+  stage: infra
   script:
     - echo "Do your deploy here"
 
-deploy kubernetes:
-  stage: deploy
+Deploy Kubernetes:
+  stage: kube
   script:
     - echo "Do your deploy here"
+
+Destroy:
+  stage: destroy
+  script:
+    - echo "Do your deploy here"
+  when: manual
