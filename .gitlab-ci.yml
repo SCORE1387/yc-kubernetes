@@ -17,8 +17,10 @@ before_script:
 Deploy Infra:
   stage: infra
   script:
-    - echo "Start infrustructure deployment"
-    - ./ci/yc-infra.sh
+    - echo "Start infra deployment."
+    - ./ci/yc-vpc.sh
+    - ./ci/yc-compute.sh
+    - echo "Infra deployed."
 
 Deploy Kubernetes:
   stage: kube
