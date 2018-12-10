@@ -1,4 +1,4 @@
-image: busybox:latest
+image: ubuntu:16.04
 
 stages:
   - infra
@@ -9,8 +9,7 @@ Deploy Infra:
   stage: infra
   script:
     - echo "Start infrustructure deployment"
-    - wget https://storage.yandexcloud.net/yandexcloud-yc/install.sh
-    - chmod +x install.sh && ./install.sh
+    - wget https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
     - yc init --token ${YC_OAUTH_TOKEN} --cloud-id ${YC_CLOUD_ID} --folder-id ${YC_FOLDER_ID}
     - yc config list
 
