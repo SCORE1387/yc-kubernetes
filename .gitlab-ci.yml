@@ -7,7 +7,7 @@ stages:
   
 before_script:
   - apt-get update
-  - apt-get install -y -qq curl
+  - apt-get install -y curl jq
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
   - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
