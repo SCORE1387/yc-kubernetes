@@ -12,12 +12,13 @@ before_script:
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
   - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
   - ~/yandex-cloud/bin/yc config set folder-id ${YC_FOLDER_ID}
-  - ~/yandex-cloud/bin/yc config list
+  - chmod +x ci/*.sh
 
 Deploy Infra:
   stage: infra
   script:
     - echo "Start infrustructure deployment"
+    - ./ci/yc-infra.sh
 
 Deploy Kubernetes:
   stage: kube
