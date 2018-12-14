@@ -7,7 +7,7 @@ stages:
   
 before_script:
   - apt-get update
-  - apt-get install -y -qq curl
+  - apt-get install -y curl jq
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
   - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
@@ -17,8 +17,10 @@ before_script:
 Deploy Infra:
   stage: infra
   script:
-    - echo "Start infrustructure deployment"
+    - echo "Start infra deployment."
+    - ./infra/yc-vpc.sh
     - ./infra/yc-compute.sh
+    - echo "Infra deployed."
 
 Deploy Kubernetes:
   stage: kube
@@ -28,5 +30,6 @@ Deploy Kubernetes:
 Destroy:
   stage: destroy
   script:
-    - echo "Do your deploy here"
+    - echo "Destroy infra"
+    - ./ci/destroy.sh
   when: manual
