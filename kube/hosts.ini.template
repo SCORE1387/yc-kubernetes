@@ -1,0 +1,26 @@
+[all]
+master01 ansible_host={{ master01_ip }} ip=192.168.10.3  etcd_member_name=etcd1
+master02 ansible_host={{ master02_ip }} ip=192.168.20.3  etcd_member_name=etcd2
+master03 ansible_host={{ master03_ip }} ip=192.168.30.3  etcd_member_name=etcd3
+node01   ansible_host={{ node01_ip }}   ip=192.168.10.10
+node02   ansible_host={{ node02_ip }}   ip=192.168.10.10
+node03   ansible_host={{ node03_ip }}   ip=192.168.30.10
+
+[kube-master]
+master01
+master02
+master03
+
+[etcd]
+master01
+master02
+master03
+
+[kube-node]
+node01
+node02
+node03
+
+[k8s-cluster:children]
+kube-master
+kube-node
