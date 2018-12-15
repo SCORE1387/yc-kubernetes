@@ -7,12 +7,19 @@ stages:
 before_script:
   - apt-get update
   - apt-get install -y curl jq
+
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
   - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
   - ~/yandex-cloud/bin/yc config set folder-id ${YC_FOLDER_ID}
+
   - chmod +x infra/*.sh
   - chmod +x kube/*.sh
+
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
 
 Deploy Infra:
   stage: infra
@@ -30,6 +37,7 @@ Destroy:
   when: manual
 
 Deploy Kubernetes:
+  image: williamyeh/ansible:ubuntu16.04
   stage: kube
   script:
     - echo "Start kubernetes deployment"
@@ -39,4 +47,4 @@ Deploy Kubernetes:
     - git clone git@github.com:kubernetes-sigs/kubespray.git
     - cp kube_hosts.ini kubespray/inventory/sample/kube_hosts.ini
     - cd kubespray
-    - ansible-playbook -i inventory/sample/kube_hosts.ini --become --become-user=root cluster.yml
+    - ansible-playbook -i inventory/sample/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
