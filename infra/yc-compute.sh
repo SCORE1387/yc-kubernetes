@@ -20,7 +20,7 @@ echo "Start Access VM deployment."
     --core-fraction 5 \
     --network-interface subnet-name=${subnet},address=${ip},nat-ip-version=ipv4  \
     --create-boot-disk image-folder-id=standard-images,image-name=ubuntu-1604-lts-1539450374,size=20 \
-    --ssh-key ./ci/id_rsa.pub
+    --ssh-key ./infra/id_rsa.pub
 }
 
 # $1 - vm name
@@ -42,7 +42,7 @@ echo "Start Master ${name} VM deployment."
     --cores 2 \
     --network-interface subnet-name=${subnet},address=${ip},nat-ip-version=ipv4 \
     --create-boot-disk image-folder-id=standard-images,image-name=ubuntu-1604-lts-1539450374,size=20 \
-    --ssh-key ./ci/id_rsa.pub
+    --ssh-key ./infra/id_rsa.pub
 }
 
 # $1 - vm name
@@ -64,7 +64,7 @@ echo "Start Node ${name} VM deployment."
     --cores 1 \
     --network-interface subnet-name=${subnet},address=${ip},nat-ip-version=ipv4 \
     --create-boot-disk image-folder-id=standard-images,image-name=ubuntu-1604-lts-1539450374,size=20 \
-    --ssh-key ./ci/id_rsa.pub
+    --ssh-key ./infra/id_rsa.pub
 }
 
 deploy_master master01 ru-central1-a kube-subnet-a 192.168.10.3 
