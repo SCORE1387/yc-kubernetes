@@ -41,9 +41,10 @@ Destroy:
 Deploy Kubernetes:
   stage: kube
   script:
-    - echo "Start kubernetes deployment"
-    - echo "Sleeping for 200 seconds..."
+    - echo "Looks like YC VMs need some time to become ready after deployment..."
+    - echo "So, will sleep for 200 seconds..."
     - sleep 200
+    - echo "Start kubernetes deployment"
     - ./kube/make_inventory.sh
     - cat ./kube/kube_hosts.ini
     - cd kube
@@ -52,8 +53,6 @@ Deploy Kubernetes:
     - cd kubespray
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/sample/kube_hosts.ini --user yc-user --become --become-user=root -e kubeconfig_localhost=true cluster.yml
-    - ls ./kube/kubespray/inventory/
-    - ls ./kube/kubespray/inventory/sample/
     - echo "Kubernetes deployed."
   artifacts:
     name: kube_config
