@@ -35,3 +35,8 @@ Deploy Kubernetes:
     - echo "Start kubernetes deployment"
     - ./kube/make_inventory.sh
     - cat ./kube/kube_hosts.ini
+    - cd kube
+    - git clone git@github.com:kubernetes-sigs/kubespray.git
+    - cp kube_hosts.ini kubespray/inventory/sample/kube_hosts.ini
+    - cd kubespray
+    - ansible-playbook -i inventory/sample/kube_hosts.ini --become --become-user=root cluster.yml
