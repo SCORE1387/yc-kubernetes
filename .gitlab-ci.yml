@@ -1,4 +1,4 @@
-image: ubuntu:16.04
+image: williamyeh/ansible:ubuntu16.04
 
 stages:
   - infra
@@ -39,7 +39,6 @@ Destroy:
   when: manual
 
 Deploy Kubernetes:
-  image: williamyeh/ansible:ubuntu16.04
   stage: kube
   script:
     - echo "Start kubernetes deployment"
