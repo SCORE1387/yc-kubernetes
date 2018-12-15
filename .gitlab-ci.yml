@@ -6,7 +6,7 @@ stages:
   
 before_script:
   - apt-get update
-  - apt-get install -y curl jq ssh
+  - apt-get install -y curl jq ssh git
 
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
