@@ -13,6 +13,7 @@ before_script:
   - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
   - ~/yandex-cloud/bin/yc config set folder-id ${YC_FOLDER_ID}
   - chmod +x infra/*.sh
+  - chmod +x kube/*.sh
 
 Deploy Infra:
   stage: infra
@@ -25,7 +26,9 @@ Deploy Infra:
 Deploy Kubernetes:
   stage: kube
   script:
-    - echo "Do your deploy here"
+    - echo "Start kubernetes deployment"
+    - ./kube/make_inventory.sh
+    - cat ./kube/kube_hosts.ini
 
 Destroy:
   stage: destroy
