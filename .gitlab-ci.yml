@@ -48,4 +48,5 @@ Deploy Kubernetes:
     - git clone https://github.com/kubernetes-sigs/kubespray.git
     - cp kube_hosts.ini kubespray/inventory/sample/kube_hosts.ini
     - cd kubespray
+    - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/sample/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
