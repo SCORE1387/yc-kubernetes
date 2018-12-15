@@ -6,7 +6,7 @@ stages:
   
 before_script:
   - apt-get update
-  - apt-get install -y curl jq
+  - apt-get install -y curl jq ssh
 
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
   - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
@@ -33,7 +33,7 @@ Destroy:
   stage: infra
   script:
     - echo "Destroy infra"
-    - ./ci/destroy.sh
+    - ./infra/destroy.sh
   when: manual
 
 Deploy Kubernetes:
