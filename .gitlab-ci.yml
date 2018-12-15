@@ -30,12 +30,16 @@ Deploy Infra:
     - ./infra/yc-vpc.sh
     - ./infra/yc-compute.sh
     - echo "Infra deployed."
+  only:
+    - master
 
 Destroy:
   stage: infra
   script:
     - echo "Destroy infra"
     - ./infra/destroy.sh
+  only:
+    - master
   when: manual
 
 Deploy Kubernetes:
@@ -54,6 +58,8 @@ Deploy Kubernetes:
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/sample/kube_hosts.ini --user yc-user --become --become-user=root -e kubeconfig_localhost=true cluster.yml
     - echo "Kubernetes deployed."
+  only:
+    - master
   artifacts:
     name: kube_config
     paths:
