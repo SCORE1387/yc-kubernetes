@@ -3,7 +3,6 @@ image: ubuntu:16.04
 stages:
   - infra
   - kube
-  - destroy
   
 before_script:
   - apt-get update
@@ -23,16 +22,16 @@ Deploy Infra:
     - ./infra/yc-compute.sh
     - echo "Infra deployed."
 
+Destroy:
+  stage: infra
+  script:
+    - echo "Destroy infra"
+    - ./ci/destroy.sh
+  when: manual
+
 Deploy Kubernetes:
   stage: kube
   script:
     - echo "Start kubernetes deployment"
     - ./kube/make_inventory.sh
     - cat ./kube/kube_hosts.ini
-
-Destroy:
-  stage: destroy
-  script:
-    - echo "Destroy infra"
-    - ./ci/destroy.sh
-  when: manual

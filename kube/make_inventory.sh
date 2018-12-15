@@ -7,7 +7,7 @@ function make_ip {
 public_ip=$(~/yandex-cloud/bin/yc compute instance get ${name} --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address)
 echo "${name} VM Public IP: ${public_ip}"
 
-sed -i -e "s/{{ ${name} }}/${public_ip}/g" kube_hosts.ini
+sed -i -e "s/{{ ${name}_ip }}/${public_ip}/g" ./kube/kube_hosts.ini
 
 }
 
