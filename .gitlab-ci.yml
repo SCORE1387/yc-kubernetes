@@ -50,7 +50,7 @@ Deploy Kubernetes:
     - sleep 200
     - echo "Start kubernetes deployment"
     - ./kube/make_inventory.sh
-    - cat ./kube/ubespray_inventory/kube_hosts.ini
+    - cat ./kube/kubespray_inventory/kube_hosts.ini
     - cd kube
     - git clone https://github.com/kubernetes-sigs/kubespray.git
     - cp -r kubespray_inventory kubespray/inventory/
