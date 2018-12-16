@@ -16,3 +16,5 @@ Install Kubernetes to Yandex Cloud
 - Use valid certificate
 
 - Deploy load balancer for kube nodes
+
+- DNS registration
