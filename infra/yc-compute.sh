@@ -11,10 +11,10 @@ function deploy_access_vm {
     local ip=$4
     
 echo "Start Access VM deployment."
-if ~/yandex-cloud/bin/yc compute instance get ${name} > /dev/null 2>&1; then
+if yc compute instance get ${name} > /dev/null 2>&1; then
     echo "VM already exists. Skipping."
 else
-    ~/yandex-cloud/bin/yc compute instance create \
+    yc compute instance create \
         --name ${name} \
         --hostname ${name} \
         --zone ${zone} \
@@ -38,10 +38,10 @@ function deploy_master {
     local ip=$4
     
 echo "Start Master ${name} VM deployment."
-if ~/yandex-cloud/bin/yc compute instance get ${name} > /dev/null 2>&1; then
+if yc compute instance get ${name} > /dev/null 2>&1; then
     echo "VM already exists. Skipping."
 else
-    ~/yandex-cloud/bin/yc compute instance create \
+    yc compute instance create \
         --name ${name} \
         --hostname ${name} \
         --zone ${zone} \
@@ -64,10 +64,10 @@ function deploy_node {
     local ip=$4
     
 echo "Start Node ${name} VM deployment."
-if ~/yandex-cloud/bin/yc compute instance get ${name} > /dev/null 2>&1; then
+if yc compute instance get ${name} > /dev/null 2>&1; then
     echo "VM already exists. Skipping."
 else
-    ~/yandex-cloud/bin/yc compute instance create \
+    yc compute instance create \
         --name ${name} \
         --hostname ${name} \
         --zone ${zone} \

@@ -4,7 +4,7 @@
 function make_ip {
     local name=$1
 
-public_ip=$(~/yandex-cloud/bin/yc compute instance get ${name} --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address)
+public_ip=$(yc compute instance get ${name} --format json | jq .network_interfaces[0].primary_v4_address.one_to_one_nat.address)
 echo "${name} VM Public IP: ${public_ip}"
 
 sed -i -e "s/{{ ${name}_ip }}/${public_ip}/g" ./kube/kubespray_inventory/kube_hosts.ini

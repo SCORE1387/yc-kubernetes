@@ -10,9 +10,11 @@ before_script:
   - pip install netaddr
 
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-  - ~/yandex-cloud/bin/yc config set token ${YC_OAUTH_TOKEN}
-  - ~/yandex-cloud/bin/yc config set cloud-id ${YC_CLOUD_ID}
-  - ~/yandex-cloud/bin/yc config set folder-id ${YC_FOLDER_ID}
+  - echo "alias yc='~/yandex-cloud/bin/yc'" >> ~/.bashrc
+  - source ~/.bashrc
+  - yc config set token ${YC_OAUTH_TOKEN}
+  - yc config set cloud-id ${YC_CLOUD_ID}
+  - yc config set folder-id ${YC_FOLDER_ID}
 
   - chmod +x infra/*.sh
   - chmod +x kube/*.sh
@@ -21,7 +23,6 @@ before_script:
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
-  - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 Deploy Infra:
   stage: infra
