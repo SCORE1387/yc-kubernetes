@@ -10,8 +10,8 @@ before_script:
   - pip install netaddr
 
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-  - echo "alias yc='~/yandex-cloud/bin/yc'" >> ~/.bashrc
-  - source ~/.bashrc
+  - shopt -s expand_aliases
+  - alias yc='~/yandex-cloud/bin/yc'
   - yc config set token ${YC_OAUTH_TOKEN}
   - yc config set cloud-id ${YC_CLOUD_ID}
   - yc config set folder-id ${YC_FOLDER_ID}
