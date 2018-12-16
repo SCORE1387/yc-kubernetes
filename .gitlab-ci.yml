@@ -53,15 +53,14 @@ Deploy Kubernetes:
     - cat ./kube/kube_hosts.ini
     - cd kube
     - git clone https://github.com/kubernetes-sigs/kubespray.git
-    - cp kube_hosts.ini kubespray/inventory/sample/kube_hosts.ini
+    - cp -r kubespray_inventory kubespray/inventory/
     - cd kubespray
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/sample/kube_hosts.ini --user yc-user --become --become-user=root -e kubeconfig_localhost=true cluster.yml
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
     - echo "Kubernetes deployed."
   only:
     - master
   artifacts:
     name: kube_config
     paths:
-      - ./kube/kubespray/inventory/artifacts/admin.conf
-      - ./kube/kubespray/inventory/sample/artifacts/admin.conf
+      - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
