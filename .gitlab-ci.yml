@@ -10,8 +10,6 @@ before_script:
   - pip install netaddr > /dev/null
 
   - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-#  - shopt -s expand_aliases
-#  - alias yc='~/yandex-cloud/bin/yc'
   - export PATH="~/yandex-cloud/bin:$PATH"
   - yc config set token ${YC_OAUTH_TOKEN}
   - yc config set cloud-id ${YC_CLOUD_ID}
@@ -52,7 +50,7 @@ Deploy Kubernetes:
     - sleep 200
     - echo "Start kubernetes deployment"
     - ./kube/make_inventory.sh
-    - cat ./kube/kube_hosts.ini
+    - cat ./kube/ubespray_inventory/kube_hosts.ini
     - cd kube
     - git clone https://github.com/kubernetes-sigs/kubespray.git
     - cp -r kubespray_inventory kubespray/inventory/
