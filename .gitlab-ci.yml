@@ -3,6 +3,7 @@ image: williamyeh/ansible:ubuntu16.04
 stages:
   - infra
   - kube
+  - postdeploy
   
 before_script:
   - apt-get update > /dev/null
