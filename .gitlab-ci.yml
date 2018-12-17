@@ -64,3 +64,20 @@ Deploy Kubernetes:
     name: kube_config
     paths:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
+
+Kubernetes Postdeploy:
+  stage: postdeploy
+  script:
+    - echo "Start kubernetes post-deployment steps."
+    - ./kube/make_inventory.sh
+    - cp kube/kubespray_inventory/kube_hosts.ini postdeploy/ansible/inventory/kube_hosts.ini
+    - cd postdeploy/ansible
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kube_hosts.ini -e ansible_user=yc-user playbooks/postdeploy.yml
+    - echo "Kubernetes post-deployment finished."
+  only:
+    - master
+  artifacts:
+    name: kube_admin_token
+    paths:
+      - ./postdeploy/ansible/inventory/artifacts/token.txt

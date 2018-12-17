@@ -18,3 +18,19 @@
   with_items: "{{ rbac_manifests.results }}"
   loop_control:
     label: "{{ item.item.file }}"
+
+- name: get admin token
+  shell: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep "token:" | awk '{print $2}'
+  register: admin_token
+
+- name: save admin token
+  copy:
+    content: "{{ admin_token.stdout }}"
+    dest: "/home/{{ ansible_user }}/token.txt"
+
+- name: Copy admin token to ansible host
+  fetch:
+    src: "/home/{{ ansible_user }}/token.txt"
+    dest: "{{ inventory_dir }}/artifacts/token.txt"
+    flat: yes
+    validate_checksum: no
