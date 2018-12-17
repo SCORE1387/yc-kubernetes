@@ -1,0 +1,20 @@
+- name: Pip dependencies
+  pip:
+    name: openshift
+
+- name: copy templates
+  template:
+    src: "{{ item.file }}.j2"
+    dest: "/etc/kubernetes/manifests/{{ item.file }}"
+  with_items:
+    - {file: admin-sa.yml, type: serviceaccount, name: admin-sa}
+    - {file: admin-crb.yml, type: clusterrolebinding, name: admin-crb}
+  register: rbac_manifests
+
+- name: add service accounts, bindings, etc.
+  k8s:
+    state: present
+    src: "/etc/kubernetes/manifests/{{item.item.file}}"
+  with_items: "{{ rbac_manifests.results }}"
+  loop_control:
+    label: "{{ item.item.file }}"

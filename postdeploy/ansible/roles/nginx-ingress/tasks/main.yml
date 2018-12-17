@@ -1,16 +1,33 @@
+- name: create .kube directory
+  become: yes
+  become_user: "{{ ansible_user }}"
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: copy admin.conf to user's kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    remote_src: yes
+    owner: "{{ ansible_user }}"
+
+- name: Install pyhelm pip package
+  pip:
+    name: [pyhelm, grpcio]
+
+- name: Init Helm
+  shell: helm init --client-only
+
+- name: Update Helm repo
+  shell: helm repo update
+
+- name: Copy values file
+  template:
+    src: values.yml.j2
+    dest: "/home/{{ ansible_user }}/values.yml"
+
 - name: Install nginx-ingress helm chart
-  helm:
-    chart:
-      name: stable/nginx-ingress
-    state: installed
-    name: nginx-ingress
-    namespace: nginx-ingress
-    values:
-      rbac:
-        create: true
-      controller:
-        service:
-          type: NodePort
-          nodePorts:
-            http: 30001
-            https: 30001
+  shell: helm install stable/nginx-ingress --values values.yml --name nginx-ingress --namespace nginx-ingress
+  ignore_errors: true

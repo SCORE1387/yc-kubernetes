@@ -1,0 +1,9 @@
+- name: Install required pip package for Helm
+  pip:
+    name: [pyhelm, grpcio]
+
+- name: Init Helm
+  shell: helm init --client-only
+
+- name: Update Helm repo
+  shell: helm repo update
