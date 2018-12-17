@@ -1,0 +1,16 @@
+- name: Install nginx-ingress helm chart
+  helm:
+    chart:
+      name: stable/nginx-ingress
+    state: installed
+    name: nginx-ingress
+    namespace: nginx-ingress
+    values:
+      rbac:
+        create: true
+      controller:
+        service:
+          type: NodePort
+          nodePorts:
+            http: 30001
+            https: 30001

@@ -14,8 +14,8 @@ yc compute instance delete master02
 echo "Destroy Master (master03) VM."
 yc compute instance delete master03
 
-#echo "Destroy Access VM."
-#yc compute instance delete access
+echo "Destroy Access VM."
+yc compute instance delete access
 
 echo "Destroy subnet kube-subnet-a."
 yc vpc subnet delete kube-subnet-a
