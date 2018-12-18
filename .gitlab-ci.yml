@@ -34,7 +34,7 @@ Deploy Infra:
     - ./infra/yc-compute.sh
     - echo "Infra deployed."
   only:
-    - master-disabled
+    - master
 
 Destroy:
   stage: infra
@@ -62,7 +62,7 @@ Deploy Kubernetes:
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
     - echo "Kubernetes deployed."
   only:
-    - master-disabled
+    - master
   artifacts:
     name: kube_config
     paths:
