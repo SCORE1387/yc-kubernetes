@@ -24,6 +24,8 @@ before_script:
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
 
+  - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)
+
 Deploy Infra:
   stage: infra
   script:
@@ -32,7 +34,7 @@ Deploy Infra:
     - ./infra/yc-compute.sh
     - echo "Infra deployed."
   only:
-    - master
+    - master-disabled
 
 Destroy:
   stage: infra
@@ -60,7 +62,7 @@ Deploy Kubernetes:
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
     - echo "Kubernetes deployed."
   only:
-    - master
+    - master-disabled
   artifacts:
     name: kube_config
     paths:
