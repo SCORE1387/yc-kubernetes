@@ -24,7 +24,7 @@ before_script:
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
 
-  - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)/postdeploy
+  - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)/postdeploy/ansible
 
 Deploy Infra:
   stage: infra
