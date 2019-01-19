@@ -11,3 +11,5 @@ Install Kubernetes to Yandex Cloud
 - Deploy load balancer for kube nodes
 
 - DNS registration
+
+- Switch to Terraform
