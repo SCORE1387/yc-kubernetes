@@ -13,10 +13,10 @@ stages:
   
 before_script:
   - apt-get update > /dev/null
-  - apt-get install -y curl jq ssh git > /dev/null
+  - apt-get install -y curl jq ssh git unzip > /dev/null
   - pip install netaddr > /dev/null
 
-  - wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+  - wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip > /dev/null
   - unzip terra*
   - mv terraform /usr/local/bin
   - rm -rf terra*
