@@ -44,18 +44,24 @@ tf_validate:
 Deploy Infra:
   stage: infra
   script:
-    - echo "Start infra deployment."
-    - ./infra/yc-vpc.sh
-    - ./infra/yc-compute.sh
-    - echo "Infra deployed."
+    - cd infra
+    - terraform init -reconfigure -get=true -get-plugins=true
+    - terraform apply -input=false -auto-approve
+    - terraform output -json > tf_output.json
   only:
     - master
+  artifacts:
+    name: tf_config
+    paths:
+      - ./infra/terraform.tfstate
+      - ./infra/output.json
 
 Destroy:
   stage: infra
   script:
-    - echo "Destroy infra"
-    - ./infra/destroy.sh
+    - cd infra
+    - terraform init -reconfigure -get=true -get-plugins=true
+    - terraform destroy
   only:
     - master
   when: manual
