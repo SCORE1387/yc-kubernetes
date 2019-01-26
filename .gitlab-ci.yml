@@ -54,14 +54,14 @@ Deploy Infra:
     name: tf_config
     paths:
       - ./infra/terraform.tfstate
-      - ./infra/output.json
+      - ./infra/tf_output.json
 
 Destroy:
   stage: infra
   script:
     - cd infra
     - terraform init -reconfigure -get=true -get-plugins=true
-    - terraform destroy
+    - terraform destroy -input=false -auto-approve
   only:
     - master
   when: manual
