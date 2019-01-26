@@ -39,7 +39,7 @@ tf_validate:
   script:
     - cd infra
     - terraform init -reconfigure -get=true -get-plugins=true
-    - terraform validate -check-variables=true -var="ci/test.tfvars"
+    - terraform validate -check-variables=true
 
 Deploy Infra:
   stage: infra
