@@ -23,7 +23,7 @@ before_script:
 
   - curl -s https://terraform-provider-yandex.website.yandexcloud.net/terraform-provider-yandex/install.sh | bash
 
-  - chmod +x kube/*.sh
+  - chmod +x infra/*.sh
 
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
