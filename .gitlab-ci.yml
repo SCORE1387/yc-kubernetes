@@ -10,6 +10,7 @@ stages:
   - infra
   - kube
   - postdeploy
+  - destroy
   
 before_script:
   - apt-get update > /dev/null
@@ -56,21 +57,6 @@ Deploy Infra:
       - ./infra/terraform.tfstate
       - ./infra/tf_output.json
 
-Destroy:
-  stage: infra
-  script:
-    - cd infra
-    - terraform init -reconfigure -get=true -get-plugins=true
-    - terraform destroy -input=false -auto-approve
-  only:
-    - master
-  when: manual
-  artifacts:
-    name: tf_config
-    paths:
-      - ./infra/terraform.tfstate
-      - ./infra/tf_output.json
-
 Deploy Kubernetes:
   stage: kube
   script:
@@ -86,7 +72,7 @@ Deploy Kubernetes:
     - cp -r kubespray_inventory kubespray/inventory/
     - cd kubespray
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user yc-user --become --become-user=root cluster.yml
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user ubuntu --become --become-user=root cluster.yml
     - echo "Kubernetes deployed."
   only:
     - master
@@ -103,7 +89,7 @@ Kubernetes Postdeploy:
     - cp kube/kubespray_inventory/kube_hosts.ini postdeploy/ansible/inventory/kube_hosts.ini
     - cd postdeploy/ansible
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kube_hosts.ini -e ansible_user=yc-user playbooks/postdeploy.yml
+    - ansible-playbook -i inventory/kube_hosts.ini -e ansible_user=ubuntu playbooks/postdeploy.yml
     - echo "Kubernetes post-deployment finished."
   only:
     - master
@@ -111,3 +97,17 @@ Kubernetes Postdeploy:
     name: kube_admin_token
     paths:
       - ./postdeploy/ansible/inventory/artifacts/token.txt
+
+Destroy:
+  stage: destroy
+  script:
+    - cd infra
+    - terraform init -reconfigure -get=true -get-plugins=true
+    - terraform destroy -input=false -auto-approve
+  only:
+    - master
+  when: manual
+  artifacts:
+    name: tf_config
+    paths:
+      - ./infra/terraform.tfstate
