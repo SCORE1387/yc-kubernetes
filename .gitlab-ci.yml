@@ -65,6 +65,11 @@ Destroy:
   only:
     - master
   when: manual
+  artifacts:
+    name: tf_config
+    paths:
+      - ./infra/terraform.tfstate
+      - ./infra/tf_output.json
 
 Deploy Kubernetes:
   stage: kube
@@ -73,9 +78,10 @@ Deploy Kubernetes:
     - echo "So, will sleep for 200 seconds..."
     - sleep 200
     - echo "Start kubernetes deployment"
-    - ./kube/make_inventory.sh
-    - cat ./kube/kubespray_inventory/kube_hosts.ini
-    - cd kube
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ./../kube
+    - cat ./kubespray_inventory/kube_hosts.ini
     - git clone https://github.com/kubernetes-sigs/kubespray.git
     - cp -r kubespray_inventory kubespray/inventory/
     - cd kubespray
