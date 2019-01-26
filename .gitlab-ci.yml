@@ -1,6 +1,12 @@
 image: williamyeh/ansible:ubuntu16.04
 
+variables:
+  TF_VAR_yc_token: ${YC_OAUTH_TOKEN}
+  TF_VAR_yc_cloud_id: ${YC_CLOUD_ID}
+  TF_VAR_yc_folder_id: ${YC_FOLDER_ID}
+
 stages:
+  - validate
   - infra
   - kube
   - postdeploy
@@ -10,13 +16,13 @@ before_script:
   - apt-get install -y curl jq ssh git > /dev/null
   - pip install netaddr > /dev/null
 
-  - curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-  - export PATH="~/yandex-cloud/bin:$PATH"
-  - yc config set token ${YC_OAUTH_TOKEN}
-  - yc config set cloud-id ${YC_CLOUD_ID}
-  - yc config set folder-id ${YC_FOLDER_ID}
+  - wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+  - unzip terra*
+  - mv terraform /usr/local/bin
+  - rm -rf terra*
 
-  - chmod +x infra/*.sh
+  - curl -s https://terraform-provider-yandex.website.yandexcloud.net/terraform-provider-yandex/install.sh | bash
+
   - chmod +x kube/*.sh
 
   - eval $(ssh-agent -s)
@@ -25,6 +31,16 @@ before_script:
   - chmod 700 ~/.ssh
 
   - echo 'Ansible refuses to read from a world-writeable folder, hence' && chmod -v 700 $(pwd)/postdeploy/ansible
+
+tf_validate:
+  stage: validate
+  only:
+    - master
+  script:
+    - cd infra
+    - rm backend.tf
+    - terraform init -reconfigure -get=true -get-plugins=true
+    - terraform validate -check-variables=true -var="ci/test.tfvars"
 
 Deploy Infra:
   stage: infra
