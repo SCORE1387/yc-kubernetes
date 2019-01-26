@@ -38,7 +38,6 @@ tf_validate:
     - master
   script:
     - cd infra
-    - rm backend.tf
     - terraform init -reconfigure -get=true -get-plugins=true
     - terraform validate -check-variables=true -var="ci/test.tfvars"
 
