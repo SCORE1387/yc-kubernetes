@@ -13,7 +13,7 @@ variable "az3_cidrs" {
 }
 
 variable "vm_image_id" {
-  default = "fd8k97s383n2e699qfbq"
+  default = "fd8u8t05uet8frke86tb"
 }
 
 variable "master_vm_cpu" {
