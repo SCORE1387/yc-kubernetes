@@ -107,6 +107,11 @@ resource "yandex_compute_instance" "node01" {
     }
   }
 
+  secondary_disk  {
+    disk_id = "${yandex_compute_disk.node01-glusterfs.id}"
+    auto_delete = true
+  }
+
   network_interface {
     subnet_id = "${yandex_vpc_subnet.kube-subnet-a.id}"
     ip_address = "${cidrhost(var.az1_cidrs[0], 10)}"
@@ -136,6 +141,11 @@ resource "yandex_compute_instance" "node02" {
     }
   }
 
+  secondary_disk  {
+    disk_id = "${yandex_compute_disk.node02-glusterfs.id}"
+    auto_delete = true
+  }
+
   network_interface {
     subnet_id = "${yandex_vpc_subnet.kube-subnet-b.id}"
     ip_address = "${cidrhost(var.az2_cidrs[0], 10)}"
@@ -163,6 +173,11 @@ resource "yandex_compute_instance" "node03" {
       size = "${var.node_vm_disk}"
       image_id = "${var.vm_image_id}"
     }
+  }
+
+  secondary_disk  {
+    disk_id = "${yandex_compute_disk.node03-glusterfs.id}"
+    auto_delete = true
   }
 
   network_interface {

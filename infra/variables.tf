@@ -25,6 +25,9 @@ variable "master_vm_ram" {
 variable "master_vm_disk" {
   default = 20
 }
+variable "glusterfs_disk_size" {
+  default = 20
+}
 
 variable "node_vm_cpu" {
   default = 1
