@@ -100,13 +100,12 @@ Kubernetes Postdeploy:
   artifacts:
     name: kube_admin_token
     paths:
-      - ./postdeploy/ansible/inventory/artifacts/token.txt
+      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
 
 Destroy:
   stage: destroy
   script:
     - cd infra
-    - ls
     - terraform init -reconfigure -get=true -get-plugins=true
     - terraform destroy -input=false -auto-approve
   only:
