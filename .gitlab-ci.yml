@@ -87,7 +87,9 @@ Kubernetes Postdeploy:
   stage: postdeploy
   script:
     - echo "Start kubernetes post-deployment steps."
-    - ./kube/make_inventory.sh
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ..
     - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
     - cd postdeploy/ansible
     - export ANSIBLE_FORCE_COLOR=1
