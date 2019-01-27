@@ -13,7 +13,7 @@ variable "az3_cidrs" {
 }
 
 variable "vm_image_id" {
-  default = "fd87nv867bqvd6fdimdq" //ubuntu-1604-lts-1539450374
+  default = "fd8k97s383n2e699qfbq"
 }
 
 variable "master_vm_cpu" {
