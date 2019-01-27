@@ -1,5 +1,5 @@
 locals {
-  ssh-keys = "yc-user:${file("files/id_rsa.pub")}"
+  ssh-keys = "centos:${file("files/id_rsa.pub")}"
 }
 
 resource "yandex_compute_instance" "master01" {
