@@ -69,10 +69,10 @@ Deploy Kubernetes:
     - cd ./../kube
     - cat ./kubespray_inventory/kube_hosts.ini
     - git clone https://github.com/kubernetes-sigs/kubespray.git
+    - cd kubespray
     - git fetch && git fetch --tags
     - git checkout v2.8.2
-    - cp -r kubespray_inventory kubespray/inventory/
-    - cd kubespray
+    - cp -r ../kubespray_inventory inventory/
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user centos --become --become-user=root --timeout 30 cluster.yml
     - echo "Kubernetes deployed."
@@ -88,10 +88,10 @@ Kubernetes Postdeploy:
   script:
     - echo "Start kubernetes post-deployment steps."
     - ./kube/make_inventory.sh
-    - cp kube/kubespray_inventory/kube_hosts.ini postdeploy/ansible/inventory/kube_hosts.ini
+    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
     - cd postdeploy/ansible
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
     - echo "Kubernetes post-deployment finished."
   only:
     - master
@@ -104,6 +104,7 @@ Destroy:
   stage: destroy
   script:
     - cd infra
+    - ls
     - terraform init -reconfigure -get=true -get-plugins=true
     - terraform destroy -input=false -auto-approve
   only:

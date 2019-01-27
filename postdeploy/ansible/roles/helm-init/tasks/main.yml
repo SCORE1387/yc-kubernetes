@@ -3,7 +3,7 @@
     name: [pyhelm, grpcio]
 
 - name: Init Helm
-  shell: helm init --client-only
+  command: "{{bin_dir}}/helm init --client-only"
 
 - name: Update Helm repo
-  shell: helm repo update
+  command: "{{bin_dir}}/helm repo update"

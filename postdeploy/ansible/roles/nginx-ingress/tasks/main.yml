@@ -4,5 +4,4 @@
     dest: "/home/{{ ansible_user }}/values.yml"
 
 - name: Install nginx-ingress helm chart
-  shell: helm upgrade --install --values values.yml --namespace nginx-ingress nginx-ingress stable/nginx-ingress
-  ignore_errors: true
+  command: "{{bin_dir}}/helm upgrade --install --values values.yml --namespace nginx-ingress nginx-ingress stable/nginx-ingress"
