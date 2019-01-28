@@ -85,7 +85,7 @@ Deploy Kubernetes:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
 
 Deploy GlusterFS:
-  stage: kube
+  stage: gluster
   script:
     - echo "Start GlusterFS & Heketi deployment"
     - cd infra
