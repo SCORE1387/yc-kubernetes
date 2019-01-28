@@ -9,6 +9,7 @@ stages:
   - validate
   - infra
   - kube
+  - gluster
   - postdeploy
   - destroy
   
@@ -82,6 +83,25 @@ Deploy Kubernetes:
     name: kube_config
     paths:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
+
+Deploy GlusterFS:
+  stage: kube
+  script:
+    - echo "Start GlusterFS & Heketi deployment"
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ./../kube
+    - cat ./kubespray_inventory/kube_hosts.ini
+    - git clone https://github.com/kubernetes-sigs/kubespray.git
+    - cd kubespray
+#    - git fetch && git fetch --tags
+#    - git checkout v2.8.2
+    - cp -r ../kubespray_inventory inventory/
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini --user centos --become --become-user=root --timeout 30 contrib/network-storage/heketi/heketi.yml
+    - echo "Kubernetes deployed."
+  only:
+    - master
 
 Kubernetes Postdeploy:
   stage: postdeploy
