@@ -12,3 +12,8 @@
     dest: "/home/{{ ansible_user }}/.kube/config"
     remote_src: yes
     owner: "{{ ansible_user }}"
+
+- name: install jmespath
+  pip:
+    name: jmespath
+  become: true

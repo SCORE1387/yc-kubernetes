@@ -9,8 +9,8 @@ stages:
   - validate
   - infra
   - kube
-  - gluster
   - postdeploy
+  - gluster
   - destroy
   
 before_script:
@@ -84,6 +84,25 @@ Deploy Kubernetes:
     paths:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
 
+Kubernetes Postdeploy:
+  stage: postdeploy
+  script:
+    - echo "Start kubernetes post-deployment steps."
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ..
+    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
+    - cd postdeploy/ansible
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
+    - echo "Kubernetes post-deployment finished."
+  only:
+    - master
+  artifacts:
+    name: kube_admin_token
+    paths:
+      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
+
 Deploy GlusterFS:
   stage: gluster
   script:
@@ -103,25 +122,6 @@ Deploy GlusterFS:
     - echo "Kubernetes deployed."
   only:
     - master
-
-Kubernetes Postdeploy:
-  stage: postdeploy
-  script:
-    - echo "Start kubernetes post-deployment steps."
-    - cd infra
-    - ./make_ansible_inventory.sh
-    - cd ..
-    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
-    - cd postdeploy/ansible
-    - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
-    - echo "Kubernetes post-deployment finished."
-  only:
-    - master
-  artifacts:
-    name: kube_admin_token
-    paths:
-      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
 
 Destroy:
   stage: destroy
