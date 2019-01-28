@@ -92,6 +92,7 @@ Deploy GlusterFS:
     - ./make_ansible_inventory.sh
     - cd ./../kube
     - cat ./kubespray_inventory/kube_hosts.ini
+    - rm -rf kubespray
     - git clone https://github.com/kubernetes-sigs/kubespray.git
     - cd kubespray
 #    - git fetch && git fetch --tags

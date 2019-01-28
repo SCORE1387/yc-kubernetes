@@ -190,3 +190,33 @@ resource "yandex_compute_instance" "node03" {
     ssh-keys = "${local.ssh-keys}"
   }
 }
+
+resource "yandex_compute_instance" "lb" {
+  name = "lb"
+  zone = "ru-central1-a"
+  allow_stopping_for_update = "true"
+
+  resources {
+    cores  = "${var.lb_vm_cpu}"
+    memory = "${var.lb_vm_ram}"
+    core_fraction = 5
+  }
+
+  boot_disk {
+    initialize_params {
+      name = "lb-boot-disk"
+      size = "${var.lb_vm_disk}"
+      image_id = "${var.vm_image_id}"
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.kube-subnet-a.id}"
+    ip_address = "${cidrhost(var.az1_cidrs[0], 100)}"
+    nat       = true
+  }
+
+  metadata {
+    ssh-keys = "${local.ssh-keys}"
+  }
+}

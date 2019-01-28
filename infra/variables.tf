@@ -39,3 +39,12 @@ variable "node_vm_disk" {
   default = 20
 }
 
+variable "lb_vm_cpu" {
+  default = 1
+}
+variable "lb_vm_ram" {
+  default = 1
+}
+variable "lb_vm_disk" {
+  default = 20
+}
