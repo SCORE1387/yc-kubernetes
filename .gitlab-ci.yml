@@ -9,14 +9,14 @@ stages:
   - validate
   - infra
   - kube
-  - postdeploy
   - gluster
+  - postdeploy
   - destroy
   
 before_script:
   - apt-get update > /dev/null
   - apt-get install -y curl jq ssh git unzip > /dev/null
-  - pip install netaddr > /dev/null
+  - pip install netaddr jmespath > /dev/null
 
   - wget https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip > /dev/null
   - unzip terra*
@@ -84,25 +84,6 @@ Deploy Kubernetes:
     paths:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
 
-Kubernetes Postdeploy:
-  stage: postdeploy
-  script:
-    - echo "Start kubernetes post-deployment steps."
-    - cd infra
-    - ./make_ansible_inventory.sh
-    - cd ..
-    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
-    - cd postdeploy/ansible
-    - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
-    - echo "Kubernetes post-deployment finished."
-  only:
-    - master
-  artifacts:
-    name: kube_admin_token
-    paths:
-      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
-
 Deploy GlusterFS:
   stage: gluster
   script:
@@ -122,6 +103,25 @@ Deploy GlusterFS:
     - echo "Kubernetes deployed."
   only:
     - master
+
+Kubernetes Postdeploy:
+  stage: postdeploy
+  script:
+    - echo "Start kubernetes post-deployment steps."
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ..
+    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
+    - cd postdeploy/ansible
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
+    - echo "Kubernetes post-deployment finished."
+  only:
+    - master
+  artifacts:
+    name: kube_admin_token
+    paths:
+      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
 
 Destroy:
   stage: destroy
