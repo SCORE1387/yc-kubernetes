@@ -191,8 +191,8 @@ resource "yandex_compute_instance" "node03" {
   }
 }
 
-resource "yandex_compute_instance" "lb" {
-  name = "lb"
+resource "yandex_compute_instance" "lb01" {
+  name = "lb01"
   zone = "ru-central1-a"
   allow_stopping_for_update = "true"
 

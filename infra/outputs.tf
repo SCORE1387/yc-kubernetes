@@ -48,9 +48,9 @@ output "external_ip_address_node03" {
 }
 
 output "internal_ip_address_lb" {
-  value = "${yandex_compute_instance.lb.network_interface.0.ip_address}"
+  value = "${yandex_compute_instance.lb01.network_interface.0.ip_address}"
 }
 
 output "external_ip_address_lb" {
-  value = "${yandex_compute_instance.lb.network_interface.0.nat_ip_address}"
+  value = "${yandex_compute_instance.lb01.network_interface.0.nat_ip_address}"
 }

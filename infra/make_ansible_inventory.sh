@@ -19,5 +19,5 @@ make_ip node01
 make_ip node02
 make_ip node03
 
-make_ip lb
+make_ip lb01
 
