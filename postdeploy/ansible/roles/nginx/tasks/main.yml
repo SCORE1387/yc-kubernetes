@@ -19,28 +19,23 @@
   yum:
     name: nginx
     state: present
-
-- name: Copy Certificate
-  template:
-    src: certificate.crt
-    dest: /etc/pki/nginx/server.crt
-
-- name: Copy Certificate Key
-  template:
-    src: private.key
-    dest: /etc/pki/nginx/private/server.key
+#
+#- name: Copy Certificate
+#  template:
+#    src: certificate.crt
+#    dest: /etc/pki/nginx/server.crt
+#
+#- name: Copy Certificate Key
+#  template:
+#    src: private.key
+#    dest: /etc/pki/nginx/private/server.key
 
 - name: Copy Nginx Config
   template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
 
-- name: Insert Index Page
-  template:
-    src: index.html
-    dest: /usr/share/nginx/html/index.html
-
-- name: Start NGiNX
+- name: Restart NGiNX
   service:
     name: nginx
     state: restarted
