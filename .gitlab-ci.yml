@@ -123,6 +123,25 @@ Kubernetes Postdeploy:
     paths:
       - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
 
+Load Balancer:
+  stage: postdeploy
+  script:
+    - echo "Deploy Load Balancer."
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ..
+    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
+    - cd postdeploy/ansible
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/lb.yml
+    - echo "Kubernetes post-deployment finished."
+  only:
+    - master
+  artifacts:
+    name: kube_admin_token
+    paths:
+      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
+
 Destroy:
   stage: destroy
   script:
