@@ -98,7 +98,7 @@ Load Balancer:
   only:
     - master
 
-Deploy GlusterFS:
+Kube GlusterFS:
   stage: apps
   script:
     - echo "Start GlusterFS & Heketi deployment"
@@ -147,10 +147,6 @@ Kube RBAC:
     - echo "Kubernetes post-deployment finished."
   only:
     - master
-  artifacts:
-    name: kube_admin_token
-    paths:
-      - ./ansible/inventory/kubespray_inventory/artifacts/token.txt
 
 Destroy:
   stage: destroy
