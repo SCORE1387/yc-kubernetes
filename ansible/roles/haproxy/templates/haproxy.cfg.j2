@@ -1,0 +1,78 @@
+global
+    log         127.0.0.1 local2 debug
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    ssl-server-verify none
+    maxconn     10000
+    user        haproxy
+    group       haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats user haproxy group haproxy  mode 777 level user
+
+defaults
+    log                     global
+    option                  dontlognull
+    option                  http-server-close
+    option                  redispatch
+    retries                 1
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 10000
+
+listen stats
+  bind :9000
+  mode http
+  stats enable
+  stats hide-version
+  stats realm Haproxy\ Statistics
+  stats uri /haproxy_stats
+  stats auth admin:admin
+
+frontend  main_6443
+    mode tcp
+    bind *:6443
+    default_backend        master_console_6443
+
+frontend main_80
+    mode tcp
+    bind *:80
+    default_backend        nodes_30001
+
+frontend main_443
+    mode tcp
+    bind *:443
+    default_backend        nodes_30002
+
+backend master_console_6443
+    balance     source
+    option tcp-check
+    default-server inter 2s fall 3 rise 2
+    server master01 192.168.10.3:6443 check check-ssl
+    server master02 192.168.20.3:6443 check check-ssl
+    server master03 192.168.30.3:6443 check check-ssl
+
+
+backend nodes_30001
+    mode tcp
+    balance     source
+    option tcp-check
+    default-server inter 2s fall 3 rise 2
+    server node01 192.168.10.10:80 check port 30001
+    server node02 192.168.20.10:80 check port 30001
+    server node03 192.168.30.10:80 check port 30001
+
+
+backend nodes_30002
+    mode tcp
+    balance     source
+    option tcp-check
+    default-server inter 2s fall 3 rise 2
+    server node01 192.168.10.10:443 check port 30002
+    server node02 192.168.20.10:443 check port 30002
+    server node03 192.168.30.10:443 check port 30002
+

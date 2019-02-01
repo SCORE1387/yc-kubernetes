@@ -1,14 +1,10 @@
+---
 - name: Allow Nginx to listen on tcp port 6443
   seport:
     ports: 6443
     proto: tcp
     setype: http_port_t
     state: present
-
-- name: create cert directory
-  file:
-    path: /etc/pki/nginx/private
-    state: directory
 
 - name: Add epel-release repo
   yum:
@@ -19,23 +15,11 @@
   yum:
     name: nginx
     state: present
-#
-#- name: Copy Certificate
-#  template:
-#    src: certificate.crt
-#    dest: /etc/pki/nginx/server.crt
-#
-#- name: Copy Certificate Key
-#  template:
-#    src: private.key
-#    dest: /etc/pki/nginx/private/server.key
 
 - name: Copy Nginx Config
   template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
+  notify:
+    - restart nginx
 
-- name: Restart NGiNX
-  service:
-    name: nginx
-    state: restarted

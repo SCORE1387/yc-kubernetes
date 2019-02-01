@@ -1,0 +1,28 @@
+---
+- name: Allow HAproxy to listen on tcp ports
+  seport:
+    ports: 6443,9000
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+- name: Add epel-release repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install HAproxy
+  yum:
+    name: haproxy
+    state: present
+
+- name: Copy HAproxy Config
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0640
+    owner: root
+    group: root
+  notify:
+    - restart haproxy
+
