@@ -111,8 +111,8 @@ Kubernetes Postdeploy:
     - cd infra
     - ./make_ansible_inventory.sh
     - cd ..
-    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
-    - cd postdeploy/ansible
+    - cp -r kube/kubespray_inventory ansible/inventory/
+    - cd ansible
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
     - echo "Kubernetes post-deployment finished."
@@ -130,8 +130,8 @@ Load Balancer:
     - cd infra
     - ./make_ansible_inventory.sh
     - cd ..
-    - cp -r kube/kubespray_inventory postdeploy/ansible/inventory/
-    - cd postdeploy/ansible
+    - cp -r kube/kubespray_inventory ansible/inventory/
+    - cd ansible
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/lb.yml
     - echo "Kubernetes post-deployment finished."
