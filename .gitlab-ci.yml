@@ -94,9 +94,19 @@ Load Balancer:
     - cd ansible
     - export ANSIBLE_FORCE_COLOR=1
     - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/lb.yml
-    - echo "Kubernetes post-deployment finished."
+    - echo "Load balancer deployment finished."
   only:
     - master
+
+DNS:
+  stage: platform
+  only:
+    - master
+  script:
+    - echo "Update DNS for Load Balancer."
+    - cd infra
+    - ./update_dns_record.sh
+    - echo "DNS updated."
 
 Kube GlusterFS:
   stage: apps
