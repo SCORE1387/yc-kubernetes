@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#lb_ip=$(terraform output external_ip_address_lb01)
-lb_ip=1.1.1.2
+lb_ip=$(terraform output external_ip_address_lb01)
 echo "Load Balancer Public IP: ${lb_ip}"
 
 service_name="kube"
