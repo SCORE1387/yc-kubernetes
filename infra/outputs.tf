@@ -47,10 +47,10 @@ output "external_ip_address_node03" {
   value = "${yandex_compute_instance.node03.network_interface.0.nat_ip_address}"
 }
 
-output "internal_ip_address_lb" {
+output "internal_ip_address_lb01" {
   value = "${yandex_compute_instance.lb01.network_interface.0.ip_address}"
 }
 
-output "external_ip_address_lb" {
+output "external_ip_address_lb01" {
   value = "${yandex_compute_instance.lb01.network_interface.0.nat_ip_address}"
 }
