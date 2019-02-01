@@ -8,9 +8,8 @@ variables:
 stages:
   - validate
   - infra
-  - kube
-  - gluster
-  - postdeploy
+  - platform
+  - apps
   - destroy
   
 before_script:
@@ -58,8 +57,8 @@ Deploy Infra:
       - ./infra/terraform.tfstate
       - ./infra/tf_output.json
 
-Deploy Kubernetes:
-  stage: kube
+Kubernetes:
+  stage: platform
   script:
     - echo "Looks like YC VMs need some time to become ready after deployment..."
     - echo "So, will sleep for 200 seconds..."
@@ -84,8 +83,23 @@ Deploy Kubernetes:
     paths:
       - ./kube/kubespray/inventory/kubespray_inventory/artifacts/admin.conf
 
+Load Balancer:
+  stage: platform
+  script:
+    - echo "Deploy Load Balancer."
+    - cd infra
+    - ./make_ansible_inventory.sh
+    - cd ..
+    - cp -r kube/kubespray_inventory ansible/inventory/
+    - cd ansible
+    - export ANSIBLE_FORCE_COLOR=1
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/lb.yml
+    - echo "Kubernetes post-deployment finished."
+  only:
+    - master
+
 Deploy GlusterFS:
-  stage: gluster
+  stage: apps
   script:
     - echo "Start GlusterFS & Heketi deployment"
     - cd infra
@@ -104,8 +118,8 @@ Deploy GlusterFS:
   only:
     - master
 
-Kubernetes Postdeploy:
-  stage: postdeploy
+Kube Ingress:
+  stage: apps
   script:
     - echo "Start kubernetes post-deployment steps."
     - cd infra
@@ -114,26 +128,22 @@ Kubernetes Postdeploy:
     - cp -r kube/kubespray_inventory ansible/inventory/
     - cd ansible
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/postdeploy.yml
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/ingress.yml
     - echo "Kubernetes post-deployment finished."
   only:
     - master
-  artifacts:
-    name: kube_admin_token
-    paths:
-      - ./postdeploy/ansible/inventory/kubespray_inventory/artifacts/token.txt
 
-Load Balancer:
-  stage: postdeploy
+Kube RBAC:
+  stage: apps
   script:
-    - echo "Deploy Load Balancer."
+    - echo "Start kubernetes post-deployment steps."
     - cd infra
     - ./make_ansible_inventory.sh
     - cd ..
     - cp -r kube/kubespray_inventory ansible/inventory/
     - cd ansible
     - export ANSIBLE_FORCE_COLOR=1
-    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/lb.yml
+    - ansible-playbook -i inventory/kubespray_inventory/kube_hosts.ini -e ansible_user=centos playbooks/rbac.yml
     - echo "Kubernetes post-deployment finished."
   only:
     - master

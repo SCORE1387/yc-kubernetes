@@ -1,3 +1,5 @@
+- include_tasks: kube-config.yml
+
 - name: copy templates
   template:
     src: "{{ item.file }}.j2"
