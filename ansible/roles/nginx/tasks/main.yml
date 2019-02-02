@@ -6,6 +6,12 @@
     setype: http_port_t
     state: present
 
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
 - name: Add epel-release repo
   yum:
     name: epel-release
